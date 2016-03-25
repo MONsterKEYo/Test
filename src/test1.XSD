@@ -1,0 +1,205 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+<xsd:element name="body" type="bodyType" />
+<xsd:complexType name="bodyType">
+	<xsd:sequence>
+		<xsd:element name="head" type="headType" />
+		<xsd:element name="datas" type="datasType" />
+		<xsd:element name="remark" type="xsd:string" />
+	</xsd:sequence>
+</xsd:complexType>
+<xsd:complexType name="headType">
+	<xsd:attribute name="versionnum" type="xsd:string"	use="required" />
+	<xsd:attribute name="wjscsj" type="xsd:string" use="required" />
+	<xsd:attribute name="businessitem" type="xsd:string" use="required" />
+	<xsd:attribute name="businesstype" type="xsd:string"	use="required" />
+	<xsd:attribute name="sumline" type="xsd:string"	use="required" />
+	<xsd:attribute name="sender" type="xsd:string" use="required" />
+</xsd:complexType>
+<xsd:complexType name="datasType">
+	<xsd:sequence maxOccurs="unbounded">
+		<xsd:element name="data" type="dataType" />
+	</xsd:sequence>
+</xsd:complexType>
+<xsd:complexType name="dataType">
+	<xsd:sequence minOccurs="1" maxOccurs="1">
+		<xsd:element name="item1" type="item1Type" />
+		<xsd:element name="item2" type="item2Type" />
+		<xsd:element name="item3" type="item3Type" />
+		<xsd:element name="item4" type="item4Type" />
+		<xsd:element name="item5" type="item5Type" />
+		<xsd:element name="item6" type="item6Type" />
+		<xsd:element name="item7" type="item7Type" />
+		<xsd:element name="item8" type="item8Type" />
+		<xsd:element name="item9" type="item9Type" />
+		<xsd:element name="item10" type="item10Type" />
+		<xsd:element name="item11" type="item11Type" />
+		<xsd:element name="item12" type="item12Type" />
+		<xsd:element name="item13" type="item13Type" />
+		<xsd:element name="item14" type="item14Type" />
+		<xsd:element name="item15" type="item15Type" />
+		<xsd:element name="item16" type="item16Type" />
+		<xsd:element name="item17" type="item17Type" />
+		<xsd:element name="item18" type="item18Type" />
+		<xsd:element name="item19" type="item19Type" />
+		<xsd:element name="item20" type="item20Type" />
+		<xsd:element name="item21" type="item21Type" />
+		<xsd:element name="item22" type="item22Type" />
+		<xsd:element name="item23" type="item23Type" />
+		<xsd:element name="item24" type="item24Type" />
+		<xsd:element name="item25" type="item25Type" />
+		<xsd:element name="item26" type="item26Type" />
+		<xsd:element name="item27" type="item27Type" />
+	</xsd:sequence>
+</xsd:complexType>
+<xsd:complexType name="item1Type">
+	<xsd:attribute name="code" type="xsd:string" fixed="cityname" use="required" />
+	<xsd:attribute name="name" type="xsd:string" fixed="城市名称" use="required" />
+	<xsd:attribute name="value" type="xsd:string" use="required" />
+</xsd:complexType>
+<xsd:complexType name="item2Type">
+	<xsd:attribute name="code" type="xsd:string" fixed="citycode" use="required" />
+	<xsd:attribute name="name" type="xsd:string" fixed="城市代码" use="required" />
+	<xsd:attribute name="value" type="xsd:string" use="required" />
+</xsd:complexType>
+<xsd:complexType name="item3Type">
+	<xsd:attribute name="code" type="xsd:string" fixed="stationname" use="required" />
+	<xsd:attribute name="name" type="xsd:string" fixed="点位名称" use="required" />
+	<xsd:attribute name="value" type="xsd:string" use="required" />
+</xsd:complexType>
+<xsd:complexType name="item4Type">
+	<xsd:attribute name="code" type="xsd:string" fixed="stationcode" use="required" />
+	<xsd:attribute name="name" type="xsd:string" fixed="点位代码" use="required" />
+	<xsd:attribute name="value" type="xsd:string" use="required" />
+</xsd:complexType>
+<xsd:complexType name="item5Type">
+	<xsd:attribute name="code" type="xsd:string" fixed="stationattribute" use="required" />
+	<xsd:attribute name="name" type="xsd:string" fixed="点位属性" use="required" />
+	<xsd:attribute name="value" type="xsd:string" use="required" />
+</xsd:complexType>
+<xsd:complexType name="item6Type">
+	<xsd:attribute name="code" type="xsd:string" fixed="longitude" use="required" />
+	<xsd:attribute name="name" type="xsd:string" fixed="经度" use="required" />
+	<xsd:attribute name="value" type="xsd:string" use="required" />
+</xsd:complexType>
+<xsd:complexType name="item7Type">
+	<xsd:attribute name="code" type="xsd:string" fixed="latitude" use="required" />
+	<xsd:attribute name="name" type="xsd:string" fixed="纬度" use="required" />
+	<xsd:attribute name="value" type="xsd:string" use="required" />
+</xsd:complexType>
+<xsd:complexType name="item8Type">
+	<xsd:attribute name="code" type="xsd:string" fixed="admincode" use="required" />
+	<xsd:attribute name="name" type="xsd:string" fixed="行政区划代码" use="required" />
+	<xsd:attribute name="value" type="xsd:string" use="required" />
+</xsd:complexType>
+<xsd:complexType name="item9Type">
+	<xsd:attribute name="code" type="xsd:string" fixed="year" use="required" />
+	<xsd:attribute name="name" type="xsd:string" fixed="年" use="required" />
+	<xsd:attribute name="value" type="xsd:double" use="required" />
+</xsd:complexType>
+<xsd:complexType name="item10Type">
+	<xsd:attribute name="code" type="xsd:string" fixed="month" use="required" />
+	<xsd:attribute name="name" type="xsd:string" fixed="月" use="required" />
+	<xsd:attribute name="value" type="xsd:double" use="required" />
+</xsd:complexType>
+<xsd:complexType name="item11Type">
+	<xsd:attribute name="code" type="xsd:string" fixed="day" use="required" />
+	<xsd:attribute name="name" type="xsd:string" fixed="日" use="required" />
+	<xsd:attribute name="value" type="xsd:double" use="required" />
+</xsd:complexType>
+<xsd:complexType name="item12Type">
+	<xsd:attribute name="code" type="xsd:string" fixed="hour" use="required" />
+	<xsd:attribute name="name" type="xsd:string" fixed="时" use="required" />
+	<xsd:attribute name="value" type="xsd:double" use="required" />
+</xsd:complexType>
+
+<xsd:complexType name="item13Type">
+	<xsd:attribute name="code" type="xsd:string" fixed="A21026" use="required" />
+	<xsd:attribute name="name" type="xsd:string" fixed="二氧化硫" use="required" />
+	<xsd:attribute name="value" type="xsd:string" use="required" />
+	<xsd:attribute name="status" type="xsd:string" use="required" />
+</xsd:complexType>
+<xsd:complexType name="item14Type">
+	<xsd:attribute name="code" type="xsd:string" fixed="A21003" use="required" />
+	<xsd:attribute name="name" type="xsd:string" fixed="一氧化氮" use="required" />
+	<xsd:attribute name="value" type="xsd:string" use="required" />
+	<xsd:attribute name="status" type="xsd:string" use="required" />
+</xsd:complexType>
+<xsd:complexType name="item15Type">
+	<xsd:attribute name="code" type="xsd:string" fixed="A21004" use="required" />
+	<xsd:attribute name="name" type="xsd:string" fixed="二氧化氮" use="required" />
+	<xsd:attribute name="value" type="xsd:string" use="required" />
+	<xsd:attribute name="status" type="xsd:string" use="required" />
+</xsd:complexType>
+<xsd:complexType name="item16Type">
+	<xsd:attribute name="code" type="xsd:string" fixed="A21002" use="required" />
+	<xsd:attribute name="name" type="xsd:string" fixed="氮氧化物" use="required" />
+	<xsd:attribute name="value" type="xsd:string" use="required" />
+	<xsd:attribute name="status" type="xsd:string" use="required" />
+</xsd:complexType>
+<xsd:complexType name="item17Type">
+	<xsd:attribute name="code" type="xsd:string" fixed="014" use="required" />
+	<xsd:attribute name="name" type="xsd:string" fixed="一氧化碳" use="required" />
+	<xsd:attribute name="value" type="xsd:string" use="required" />
+	<xsd:attribute name="status" type="xsd:string" use="required" />
+</xsd:complexType>
+<xsd:complexType name="item18Type">
+	<xsd:attribute name="code" type="xsd:string" fixed="O3" use="required" />
+	<xsd:attribute name="name" type="xsd:string" fixed="O3" use="required" />
+	<xsd:attribute name="value" type="xsd:string" use="required" />
+	<xsd:attribute name="status" type="xsd:string" use="required" />
+</xsd:complexType>
+<xsd:complexType name="item19Type">
+	<xsd:attribute name="code" type="xsd:string" fixed="A34002" use="required" />
+	<xsd:attribute name="name" type="xsd:string" fixed="PM10" use="required" />
+	<xsd:attribute name="value" type="xsd:string" use="required" />
+	<xsd:attribute name="status" type="xsd:string" use="required" />
+</xsd:complexType>
+<xsd:complexType name="item20Type">
+	<xsd:attribute name="code" type="xsd:string" fixed="A34004" use="required" />
+	<xsd:attribute name="name" type="xsd:string" fixed="PM2.5" use="required" />
+	<xsd:attribute name="value" type="xsd:string" use="required" />
+	<xsd:attribute name="status" type="xsd:string" use="required" />
+</xsd:complexType>
+
+<xsd:complexType name="item21Type">
+	<xsd:attribute name="code" type="xsd:string" fixed="A01007" use="required" />
+	<xsd:attribute name="name" type="xsd:string" fixed="风速" use="required" />
+	<xsd:attribute name="value" type="xsd:string" use="required" />
+	<xsd:attribute name="status" type="xsd:string" use="required" />
+</xsd:complexType>
+<xsd:complexType name="item22Type">
+	<xsd:attribute name="code" type="xsd:string" fixed="A01008" use="required" />
+	<xsd:attribute name="name" type="xsd:string" fixed="风向" use="required" />
+	<xsd:attribute name="value" type="xsd:string" use="required" />
+	<xsd:attribute name="status" type="xsd:string" use="required" />
+</xsd:complexType>
+<xsd:complexType name="item23Type">
+	<xsd:attribute name="code" type="xsd:string" fixed="A01001" use="required" />
+	<xsd:attribute name="name" type="xsd:string" fixed="气温" use="required" />
+	<xsd:attribute name="value" type="xsd:string" use="required" />
+	<xsd:attribute name="status" type="xsd:string" use="required" />
+</xsd:complexType>
+<xsd:complexType name="item24Type">
+	<xsd:attribute name="code" type="xsd:string" fixed="A01006" use="required" />
+	<xsd:attribute name="name" type="xsd:string" fixed="气压" use="required" />
+	<xsd:attribute name="value" type="xsd:string" use="required" />
+	<xsd:attribute name="status" type="xsd:string" use="required" />
+</xsd:complexType>
+<xsd:complexType name="item25Type">
+	<xsd:attribute name="code" type="xsd:string" fixed="A01004" use="required" />
+	<xsd:attribute name="name" type="xsd:string" fixed="相对湿度" use="required" />
+	<xsd:attribute name="value" type="xsd:string" use="required" />
+	<xsd:attribute name="status" type="xsd:string" use="required" />
+</xsd:complexType>
+<xsd:complexType name="item26Type">
+	<xsd:attribute name="code" type="xsd:string" fixed="A06001" use="required" />
+	<xsd:attribute name="name" type="xsd:string" fixed="雨量" use="required" />
+	<xsd:attribute name="value" type="xsd:string" use="required" />
+	<xsd:attribute name="status" type="xsd:string" use="required" />
+</xsd:complexType>
+<xsd:complexType name="item27Type">
+	<xsd:attribute name="code" type="xsd:string" fixed="remark" use="required" />
+	<xsd:attribute name="name" type="xsd:string" fixed="备注" use="required" />
+	<xsd:attribute name="value" type="xsd:string" use="required" />
+</xsd:complexType>
+</xsd:schema>
