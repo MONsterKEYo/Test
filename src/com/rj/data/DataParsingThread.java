@@ -34,7 +34,7 @@ public class DataParsingThread {
 	private String filePath12 = "E:/datashare/120000";
 	private String filePath11 = "E:/datashare/110000";
 	
-	private String provinces[] = {"110000","130000","150000","370000"};
+	private String provinces[] = {"110000","130000","150000","370000","140000"};
 	
 
 	public void dataParsing() throws Exception{
@@ -270,7 +270,7 @@ public class DataParsingThread {
 						PointInfo p = list1.get(ii);
 						java.text.DecimalFormat df = new java.text.DecimalFormat("0000");
 						int pID=ii+0;
-						String s = "(null,'"+p.getCitycode()+"','"+p.getCityname()+"','"+p.getStationcode()+"','"+p.getStationname()+"',2,'"+p.getLongitude()+"','"+p.getLatitude()+"','370000_"+df.format(pID)+"'),";
+						String s = "(null,'"+p.getCitycode()+"','"+p.getCityname()+"','"+p.getStationcode()+"','"+p.getStationname()+"',2,'"+p.getLongitude()+"','"+p.getLatitude()+"','"+provinceCode.substring(0,2)+"0000_"+df.format(pID)+"'),";
 						sqlInsert += s;
 					}
 					System.out.println(sqlInsert);
