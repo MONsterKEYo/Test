@@ -25,6 +25,7 @@ import com.rj.bean.PointInfo;
 import com.rj.util.Dom4jUtil;
 import com.rj.util.ExcelUtil;
 import com.rj.util.JdbcUtil;
+import com.rj.util.PointUtil;
 import com.rj.util.ValidataXMLTest;
 import com.rj.util.ComputeUtil;
 
@@ -188,7 +189,8 @@ public class DataParsingThread {
 					for(int ii=0;ii<list1.size();ii++){
 						PointInfo piSearch = list1.get(ii);
 						AirData ad = list2.get(ii);
-						PointInfo pi = findPoint(piSearch);
+						PointUtil pu = new PointUtil();
+						PointInfo pi = pu.findPoint(piSearch,false);
 						if(null==pi)
 							ifWrongFile = false;
 						else
@@ -265,29 +267,77 @@ public class DataParsingThread {
 					
 					
 					//生成点位信息sql语句,使用中最好注释掉此段内容
-					String sqlInsert = "INSERT INTO `datashare`.`point_info` VALUES ";
-					for(int ii=0;ii<list1.size();ii++){
-						PointInfo p = list1.get(ii);
-						java.text.DecimalFormat df = new java.text.DecimalFormat("0000");
-						int pID=ii+0;
-						String s = "(null,'"+p.getCitycode()+"','"+p.getCityname()+"','"+p.getStationcode()+"','"+p.getStationname()+"',2,'"+p.getLongitude()+"','"+p.getLatitude()+"','"+provinceCode.substring(0,2)+"0000_"+df.format(pID)+"'),";
-						sqlInsert += s;
-					}
-					System.out.println(sqlInsert);
-					System.out.println();
-					
-					
-
+//					String sqlInsert = "INSERT INTO `datashare`.`point_info` VALUES ";
+//					for(int ii=0;ii<list1.size();ii++){
+//						PointInfo p = list1.get(ii);
+//						java.text.DecimalFormat df = new java.text.DecimalFormat("0000");
+//						int pID=ii+0;
+//						String s = "(null,'"+p.getCitycode()+"','"+p.getCityname()+"','"+p.getStationcode()+"','"+p.getStationname()+"',2,'"+p.getLongitude()+"','"+p.getLatitude()+"','"+provinceCode.substring(0,2)+"0000_"+df.format(pID)+"'),";
+//						sqlInsert += s;
+//					}
+//					System.out.println(sqlInsert);
+//					System.out.println();
 					
 					List<AirData> list2 = (List<AirData>) list.get(1);
 					List<AirData> listToAdd = new ArrayList();
 					for(int ii=0;ii<list1.size();ii++){
 						PointInfo piSearch = list1.get(ii);
 						AirData ad = list2.get(ii);
-						PointInfo pi = findPoint(piSearch);
-						if(null==pi)
-							ifWrongFile = false;
-						else
+						PointUtil pu = new PointUtil();
+						PointInfo pi = pu.findPoint(piSearch,false);
+						if(null==pi){
+							//插入此点位，重新执行
+							
+							//1.先查询该省所有点位
+							PointInfo pnewcode = new PointInfo();
+							pnewcode.setNewcode(provinceCode);
+							List<PointInfo> provincePoints = pu.findPoints(pnewcode);
+							
+							//2.使用经纬度判断是否存在点位改名的情况
+							try{
+								//当前数据的点位经纬度
+								double longitude = Double.parseDouble(piSearch.getLongitude());
+								double latitude = Double.parseDouble(piSearch.getLatitude());
+								//与该省全部点位经纬度作比较±0.0001
+								boolean isNew = true;
+								for(PointInfo p:provincePoints){
+									double plong = Double.parseDouble(p.getLongitude().trim());
+									double plat = Double.parseDouble(p.getLatitude().trim());
+									//3.如果是点位改名-update，如果是新点位-insert
+									if( longitude-0.0001<=plong && longitude+0.001>=plong
+											&& latitude-0.0001<=plat && latitude+0.0001>=plat)
+									{
+										//可以确定为同一个点
+										String sqlupdate = "update `datashare`.`point_info` set ";
+										sqlupdate += " citycode='"+piSearch.getCitycode()+"',cityname='"+piSearch.getCityname()+"',stationcode='"+piSearch.getStationcode()+"',stationname='"+piSearch.getStationname()+"', longgitude='"+piSearch.getLongitude()+"',latitude='"+piSearch.getLatitude()+"'";
+										sqlupdate += " where citycode='"+p.getCitycode()+"' and cityname='"+p.getCityname()+"' and stationcode='"+p.getStationcode()+"' and stationname='"+p.getStationname()+"' and  longgitude='"+p.getLongitude()+"' and latitude='"+p.getLatitude()+"'";
+										System.out.println(sqlupdate);
+										sqlexecute(sqlupdate);
+										isNew = false;
+										break;
+									}
+								}
+								//新增点位
+								if(isNew){
+									java.text.DecimalFormat df = new java.text.DecimalFormat("0000");
+									int num = Integer.parseInt(piSearch.getNewcode().substring(7))+1;
+									String sqlInsert = "INSERT INTO `datashare`.`point_info` VALUES ";
+									sqlInsert += "(null,'"+piSearch.getCitycode()+"','"+piSearch.getCityname()+"','"+piSearch.getStationcode()+"','"+piSearch.getStationname()+"',2,'"+piSearch.getLongitude()+"','"+piSearch.getLatitude()+"','"
+												+provinceCode.substring(0,2)+"0000_"+df.format(num)+"')";
+									System.out.println(sqlInsert);
+									sqlexecute(sqlInsert);
+								}
+								
+							}catch(NumberFormatException e){
+								System.out.println(e);
+								ifWrongFile = false;
+								
+							}
+							
+							ii--;
+							continue;
+							//ifWrongFile = false;
+						}else
 							ad.setNewCode(pi.getNewcode());
 						
 						DateFormat format1= new SimpleDateFormat("yyyyMMddHH");  
@@ -496,44 +546,7 @@ public class DataParsingThread {
 		}
 	}
 	
-	//有SQL注入问题
-	public PointInfo findPoint(PointInfo pointInfo) throws Exception {
-		Connection conn = null;
-		PreparedStatement stmt = null;
-		ResultSet rs = null;
-		try{
-			conn = JdbcUtil.getConnection();
-			String sql = "select * from datashare.point_info where 1=1 ";
-			if(null!=pointInfo.getCitycode()&&!"".equals(pointInfo.getCitycode()))
-				sql += " and citycode='"+pointInfo.getCitycode()+"'";
-			if(null!=pointInfo.getCityname()&&!"".equals(pointInfo.getCityname()))
-				sql +=" and cityname='"+pointInfo.getCityname()+"'";	
-			if(null!=pointInfo.getStationcode()&&!"".equals(pointInfo.getStationcode()))
-				sql +=" and stationcode='"+pointInfo.getStationcode()+"'";
-			if(null!=pointInfo.getStationname()&&!"".equals(pointInfo.getStationname()))
-				sql +=" and stationname='"+pointInfo.getStationname()+"'";
-			
-			stmt = conn.prepareStatement(sql);
-			rs = stmt.executeQuery();
-			if(rs.next()){
-				PointInfo pi = new PointInfo();
-				pi.setCitycode(rs.getString("citycode"));
-				pi.setCityname(rs.getString("cityname"));
-				pi.setStationcode(rs.getString("stationcode"));
-				pi.setStationname(rs.getString("stationname"));
-				pi.setStationattribute(rs.getInt("stationattribute"));
-				pi.setLongitude(rs.getString("longitude"));
-				pi.setLatitude(rs.getString("latitude"));
-				pi.setNewcode(rs.getString("newcode"));
-				return pi;
-			}
-			return null;
-		}catch(Exception e){
-			throw new RuntimeException(e);
-		}finally{
-			JdbcUtil.release(rs, stmt, conn);
-		}
-	}
+	
 	public void ifAirDataExist(List<AirData> list) throws Exception{
 		for(int i = 0;i<list.size();i++){
 			AirData ad = new AirData();
@@ -596,6 +609,26 @@ public class DataParsingThread {
 		}
 		return false;
 	}
+	
+	
+	
+	public void sqlexecute(String sql) {
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		
+		try{
+			conn = JdbcUtil.getConnection();
+			stmt = conn.prepareStatement(sql);
+			stmt.executeQuery();
+			
+		}catch(Exception e){
+			throw new RuntimeException(e);
+		}finally{
+			JdbcUtil.release(rs, stmt, conn);
+		}
+	}
+	
 	@Test
 	public void jTest(){
 		try {

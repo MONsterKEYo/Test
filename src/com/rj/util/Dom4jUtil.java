@@ -154,9 +154,9 @@ public class Dom4jUtil implements XmlDocument {
 		                    else if(kk==4)
 		                    	pi.setStationcode(str);
 		                    else if(kk==6)
-		                    	pi.setLongitude(str);
+		                    	pi.setLongitude(str.trim().replace("го", "."));
 		                    else if(kk==7)
-		                    	pi.setLatitude(str);
+		                    	pi.setLatitude(str.trim().replace("го", "."));
 		                    else if(kk==9)
 		                    	ad.setYear(Integer.parseInt(str.trim()));
 		                    else if(kk==10)
