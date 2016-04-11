@@ -51,3 +51,4 @@ Temporary Items
 .settings/
 WebRoot/WEB-INF/
 WebRoot/META-INF/MANIFEST.MF
+src/dbcfg.properties

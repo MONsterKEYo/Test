@@ -93,10 +93,19 @@ public class QiDongQi extends HttpServlet {
 	 */
 	public void init() throws ServletException {
 		System.out.println("ря╬╜╪сть");
-		
+		int gDay = -1;
 		while (true) {
 			try {
-				
+				Calendar currentTime = Calendar.getInstance();
+				currentTime.setTime(new Date());
+				int currentDay = currentTime.get(Calendar.DAY_OF_MONTH);
+				int currentHour = currentTime.get(Calendar.HOUR);
+//				if (currentHour >= 2 && gDay != currentDay) {
+//					gDay = currentDay;
+//					InvokeBat test1 = new InvokeBat();
+//				    String batName = "E:\\SupermapExec\\auto_air_day.bat";
+//				    test1.runbat(batName);
+//				}
 				new StationsData().stationsDataParsing();
 
 				new DataParsingThread().dataParsing();

@@ -119,7 +119,7 @@ public class PointUtil {
 			if(null!=pointInfo.getNewcode()&&!"".equals(pointInfo.getNewcode()))
 				sql +=" and newcode like '"+pointInfo.getNewcode()+"%'";
 			
-			stmt = conn.prepareStatement(sql);
+			stmt = conn.prepareStatement(sql+" order by newcode desc");
 			rs = stmt.executeQuery();
 			while(rs.next()){
 				PointInfo pi = new PointInfo();

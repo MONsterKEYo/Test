@@ -309,8 +309,8 @@ public class DataParsingThread {
 									{
 										//可以确定为同一个点
 										String sqlupdate = "update `datashare`.`point_info` set ";
-										sqlupdate += " citycode='"+piSearch.getCitycode()+"',cityname='"+piSearch.getCityname()+"',stationcode='"+piSearch.getStationcode()+"',stationname='"+piSearch.getStationname()+"', longgitude='"+piSearch.getLongitude()+"',latitude='"+piSearch.getLatitude()+"'";
-										sqlupdate += " where citycode='"+p.getCitycode()+"' and cityname='"+p.getCityname()+"' and stationcode='"+p.getStationcode()+"' and stationname='"+p.getStationname()+"' and  longgitude='"+p.getLongitude()+"' and latitude='"+p.getLatitude()+"'";
+										sqlupdate += " citycode='"+piSearch.getCitycode()+"',cityname='"+piSearch.getCityname()+"',stationcode='"+piSearch.getStationcode()+"',stationname='"+piSearch.getStationname()+"', longitude='"+piSearch.getLongitude()+"',latitude='"+piSearch.getLatitude()+"'";
+										sqlupdate += " where citycode='"+p.getCitycode()+"' and cityname='"+p.getCityname()+"' and stationcode='"+p.getStationcode()+"' and stationname='"+p.getStationname()+"' and  longitude='"+p.getLongitude()+"' and latitude='"+p.getLatitude()+"'";
 										System.out.println(sqlupdate);
 										sqlexecute(sqlupdate);
 										isNew = false;
@@ -320,7 +320,8 @@ public class DataParsingThread {
 								//新增点位
 								if(isNew){
 									java.text.DecimalFormat df = new java.text.DecimalFormat("0000");
-									int num = Integer.parseInt(piSearch.getNewcode().substring(7))+1;
+									PointInfo plast = provincePoints.get(0);
+									int num = Integer.parseInt(plast.getNewcode().substring(7))+1;
 									String sqlInsert = "INSERT INTO `datashare`.`point_info` VALUES ";
 									sqlInsert += "(null,'"+piSearch.getCitycode()+"','"+piSearch.getCityname()+"','"+piSearch.getStationcode()+"','"+piSearch.getStationname()+"',2,'"+piSearch.getLongitude()+"','"+piSearch.getLatitude()+"','"
 												+provinceCode.substring(0,2)+"0000_"+df.format(num)+"')";
@@ -561,12 +562,10 @@ public class DataParsingThread {
 			try{
 				conn = JdbcUtil.getConnection();
 				String sql = "select * from datashare.air_data where 1=1 and sampling_time='"+timestr+"' and newcode='"+newcode+"'";
-				System.out.println(sql);
 				stmt = conn.prepareStatement(sql);
 				rs = stmt.executeQuery();
 				if(rs.next()){
 					String delsql = "delete from datashare.air_data where sampling_time='"+timestr+"' and newcode='"+newcode+"'";
-					System.out.println(delsql);
 //					stmt = conn.prepareStatement(delsql);
 //					stmt.executeQuery();
 					   try {
@@ -620,9 +619,10 @@ public class DataParsingThread {
 		try{
 			conn = JdbcUtil.getConnection();
 			stmt = conn.prepareStatement(sql);
-			stmt.executeQuery();
+			stmt.executeUpdate();
 			
 		}catch(Exception e){
+			System.out.println(e);
 			throw new RuntimeException(e);
 		}finally{
 			JdbcUtil.release(rs, stmt, conn);
