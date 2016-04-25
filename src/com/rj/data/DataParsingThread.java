@@ -1,9 +1,11 @@
 package com.rj.data;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -35,7 +37,7 @@ public class DataParsingThread {
 	private String filePath12 = "E:/datashare/120000";
 	private String filePath11 = "E:/datashare/110000";
 	
-	private String provinces[] = {"110000","130000","150000","370000","140000"};
+	
 	
 
 	public void dataParsing() throws Exception{
@@ -149,7 +151,16 @@ public class DataParsingThread {
 				}
 			}
 		}*/
-		
+		String filePath = "E:\\datashare\\provinces.txt";
+        String encoding="UTF-8";
+        File file=new File(filePath);
+        InputStreamReader read = new InputStreamReader(new FileInputStream(file));
+        BufferedReader bufferedReader = new BufferedReader(read);
+        String strprovinces = null;
+   
+        strprovinces = bufferedReader.readLine();
+//        String provinces[] = {"110000","130000","150000","370000","140000","330000"};
+        String provinces[] = strprovinces.split(",");
 		
 		dataParsing12();
 		for(int i=0;i<provinces.length;i++){
@@ -219,8 +230,6 @@ public class DataParsingThread {
 			
 			//复制文件到备份目录或错误目录，删除原文件
 			if (file.getAbsolutePath().indexOf(".") > -1) {
-
-				
 				if (ifWrongFile){
 					ExcelUtil.FileMove(file.getAbsolutePath(), "E:/datashare_bak/120000/");
 					System.out.println("move");
@@ -267,7 +276,7 @@ public class DataParsingThread {
 					
 					
 					//生成点位信息sql语句,使用中最好注释掉此段内容
-//					String sqlInsert = "INSERT INTO `datashare`.`point_info` VALUES ";
+//					String sqlInsert1 = "INSERT INTO `datashare`.`point_info` VALUES ";
 //					for(int ii=0;ii<list1.size();ii++){
 //						PointInfo p = list1.get(ii);
 //						java.text.DecimalFormat df = new java.text.DecimalFormat("0000");
@@ -275,7 +284,7 @@ public class DataParsingThread {
 //						String s = "(null,'"+p.getCitycode()+"','"+p.getCityname()+"','"+p.getStationcode()+"','"+p.getStationname()+"',2,'"+p.getLongitude()+"','"+p.getLatitude()+"','"+provinceCode.substring(0,2)+"0000_"+df.format(pID)+"'),";
 //						sqlInsert += s;
 //					}
-//					System.out.println(sqlInsert);
+//					System.out.println(sqlInsert1);
 //					System.out.println();
 					
 					List<AirData> list2 = (List<AirData>) list.get(1);

@@ -106,7 +106,7 @@ public class QiDongQi extends HttpServlet {
 //				    String batName = "E:\\SupermapExec\\auto_air_day.bat";
 //				    test1.runbat(batName);
 //				}
-				new StationsData().stationsDataParsing();
+				//new StationsData().stationsDataParsing();
 
 				new DataParsingThread().dataParsing();
 				Thread.sleep(1000 * 60 * 5);// ∏Ù5∑÷÷”
