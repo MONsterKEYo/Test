@@ -282,7 +282,7 @@ public class DataParsingThread {
 //						java.text.DecimalFormat df = new java.text.DecimalFormat("0000");
 //						int pID=ii+0;
 //						String s = "(null,'"+p.getCitycode()+"','"+p.getCityname()+"','"+p.getStationcode()+"','"+p.getStationname()+"',2,'"+p.getLongitude()+"','"+p.getLatitude()+"','"+provinceCode.substring(0,2)+"0000_"+df.format(pID)+"'),";
-//						sqlInsert += s;
+//						sqlInsert1 += s;
 //					}
 //					System.out.println(sqlInsert1);
 //					System.out.println();
@@ -388,18 +388,20 @@ public class DataParsingThread {
 		
 	}
 	
-	public boolean testAdd(List<AirData> list){
+	public boolean testAdd(List<AirData> list){System.out.println("testadd:");
 		Connection conn = null;
 		Statement stmt = null;
 		try{
 			conn = JdbcUtil.getConnection();
 			stmt = conn.createStatement();
 			StringBuffer sb = new StringBuffer();
+			int counti = 0;
 			for(int i=0;i<list.size();i++){
 				AirData ad = list.get(i);
+				if(null==ad.getNewCode())continue;
+				counti++;
 				DateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 				String timestr=format1.format(ad.getSamplingTime());
-				
 				if(i>0) sb.append(",");
 				sb.append("(null,")//id
 				.append(ad.getYear())//year
@@ -545,6 +547,7 @@ public class DataParsingThread {
 				}	
 			}
 			String sql = "insert into datashare.air_data values "+sb.toString();
+			System.out.println("Èë¿âÊýÁ¿"+counti);
 			stmt.executeUpdate(sql);
 			
 			return true;
