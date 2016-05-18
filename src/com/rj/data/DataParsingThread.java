@@ -276,6 +276,7 @@ public class DataParsingThread {
 					
 					
 					//生成点位信息sql语句,使用中最好注释掉此段内容
+					//------------------------------------------------------
 //					String sqlInsert1 = "INSERT INTO `datashare`.`point_info` VALUES ";
 //					for(int ii=0;ii<list1.size();ii++){
 //						PointInfo p = list1.get(ii);
@@ -286,6 +287,7 @@ public class DataParsingThread {
 //					}
 //					System.out.println(sqlInsert1);
 //					System.out.println();
+					//-------------------------------------------------------
 					
 					List<AirData> list2 = (List<AirData>) list.get(1);
 					List<AirData> listToAdd = new ArrayList();
@@ -338,9 +340,10 @@ public class DataParsingThread {
 									sqlexecute(sqlInsert);
 								}
 								
-							}catch(NumberFormatException e){
+							}catch(Exception e){
 								System.out.println(e);
 								ifWrongFile = false;
+								break;
 								
 							}
 							
