@@ -26,30 +26,34 @@ public class StationsData {
 
 	private static Logger log = Logger.getLogger(StationsData.class);
 	public String stationsHourData(){
-		//测试部分
-//		 try {
-//			String filePath = "E:\\datashare\\AAA.txt";
-//	        String encoding="UTF-8";
-//	        File file=new File(filePath);
-//	        InputStreamReader read = new InputStreamReader(new FileInputStream(file));
-//	        BufferedReader bufferedReader = new BufferedReader(read);
-//	        String s = null;
-//       
-//			s = bufferedReader.readLine();
-//	        return s;
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		 System.out.println(" return null");
-//			return null;
-		//——————————————————————————
-			
-		 
-		WSEnvCityData dao = new WSEnvCityData();
-		String s = dao.getWSEnvCityDataSoap().stationQualityData("ZongHeQueryUser", "dG245%uisWR34n97tY");
-		System.out.println(s.substring(0,500));
-		return s;
+		boolean test = false;//是否在测试环境下使用，true测试环境，false正式环境
+		if(test){
+			//测试部分
+			 try {
+				String filePath = "E:\\datashare\\AAA.txt";
+		        String encoding="UTF-8";
+		        File file=new File(filePath);
+		        InputStreamReader read = new InputStreamReader(new FileInputStream(file));
+		        BufferedReader bufferedReader = new BufferedReader(read);
+		        String s = null;
+	       
+				s = bufferedReader.readLine();
+		        return s;
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			 System.out.println(" return null");
+			return null;
+			//——————————————————————————	
+		}else{	
+			//正式环境
+			WSEnvCityData dao = new WSEnvCityData();
+			String s = dao.getWSEnvCityDataSoap().stationQualityData("ZongHeQueryUser", "dG245%uisWR34n97tY");
+			System.out.println(s.substring(0,50));
+			return s;
+			//——————————————————————————	
+		}
 	}
 	
 	public void stationsDataParsing() throws ParseException{
