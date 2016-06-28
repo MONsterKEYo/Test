@@ -42,14 +42,14 @@ public class ComputeUtil {
 			AirData ad = airDatas.get(i);
 			Calendar cal = Calendar.getInstance();
 			cal.setTime(ad.getSamplingTime());
-			cal.add(Calendar.HOUR, -24);
+			cal.add(Calendar.HOUR, -8);
 			Date tStart = cal.getTime();
-		/*	// 获取该点位之前23个小时的AirData
+			// 获取该点位之前23个小时的AirData___已经修改为8个
 			List<AirData> periodData = findAirData(ad.getNewCode(), tStart, ad.getSamplingTime());
 			if(null==periodData||periodData.size()==0) {
 				periodData=new ArrayList<AirData>();
 			}
-			periodData.add(ad);*/
+			periodData.add(ad);
 			int so2IAQI = 0;
 			int no2IAQI = 0;
 			int coIAQI = 0;
@@ -59,31 +59,36 @@ public class ComputeUtil {
 			int o3t8IAQI = 0;
 			int AQI = 0;
 			// 按时间递增排列，即将录入的数据也add到list
-	/*		double pm10t24Sum = 0;
-			int pm10t24Count = 0;
-			double pm25t24Sum = 0;
-			int pm25t24Count = 0;
+//			double pm10t24Sum = 0;
+//			int pm10t24Count = 0;
+//			double pm25t24Sum = 0;
+//			int pm25t24Count = 0;
 			double o3t8Sum = 0;
 			int o3t8Count = 0;
 			
 			//根据总站气字2013第240号文件-调整AQI发布 文件，不再使用滑动平均值
-			for (int j = periodData.size() - 1; j >=0 && periodData.size() >= 8; j--) {// 倒着取，o3只取8次
+			for (int j = periodData.size() - 1; j >=0 && periodData.size() >= 6; j--) {// 倒着取，o3只取8次
 				AirData rad = periodData.get(j);
-				if (null != rad.getA34002() && !"".equals(rad.getA34002().trim())) {// pm10
-					pm10t24Count++;
-					pm10t24Sum += Double.parseDouble(rad.getA34002().trim());
-				}
-				if (null != rad.getA34004() && !"".equals(rad.getA34004().trim())) {// pm25
-					pm25t24Count++;
-					pm25t24Sum += Double.parseDouble(rad.getA34004().trim());
+//				if (null != rad.getA34002() && !"".equals(rad.getA34002().trim())) {// pm10
+//					pm10t24Count++;
+//					pm10t24Sum += Double.parseDouble(rad.getA34002().trim());
+//				}
+//				if (null != rad.getA34004() && !"".equals(rad.getA34004().trim())) {// pm25
+//					pm25t24Count++;
+//					pm25t24Sum += Double.parseDouble(rad.getA34004().trim());
+//				}
+				
+				if (null != rad.getO3() && !"".equals(rad.getO3().trim()) && !"0".equals(rad.getO3())) {// o3 取8次
+					try{
+						double d = Double.parseDouble(rad.getO3().trim());
+						o3t8Count++;
+						o3t8Sum += d;
+					}catch(NumberFormatException  e){
+						System.out.println(e);
+					}
 				}
 				
-				if (null != rad.getO3() && !"".equals(rad.getO3().trim()) && j > periodData.size() - 9) {// o3 取8次
-					o3t8Count++;
-					o3t8Sum += Double.parseDouble(rad.getO3().trim());
-				}
-				
-			}*/
+			}
 			// so2IAQI
 			if (null != ad.getA21026() && !"".equals(ad.getA21026().trim())) {// so2IAQI
 				double v = Double.parseDouble(ad.getA21026().trim());
@@ -189,10 +194,10 @@ public class ComputeUtil {
 //			}
 			
 			// o3t8IAQI
-//			if (null != ad.getO3() && !"".equals(ad.getO3().trim())&&o3t8Count >= 6) {
+			if (null != ad.getO3() && !"".equals(ad.getO3().trim())&&o3t8Count >= 6) {
 //				int[] piece = pieceO3t8;
-//				double v = o3t8Sum / o3t8Count;
-//				ad.setO3T8(Double.toString(v));
+				double v = o3t8Sum / o3t8Count;
+				ad.setO3T8(Double.toString(v));
 //				for (int p = 0; p < piece.length - 1; p++) {
 //					if (v > piece[p] && v <= piece[p + 1]) {
 //						double iaqid = pieceIAQI[p] + (v - piece[p]) / (piece[p + 1] - piece[p]) * (pieceIAQI[p + 1] - pieceIAQI[p]);
@@ -201,7 +206,7 @@ public class ComputeUtil {
 //						o3t8IAQI = pieceIAQI[piece.length - 1];
 //					}
 //				}
-//			}
+			}
 			List<Integer> IAQIs = new ArrayList<Integer>();
 			if(so2IAQI>0){
 				IAQIs.add(so2IAQI);
