@@ -591,7 +591,7 @@ public class DataParsingThread {
 				        }
 				}
 			}catch(Exception e){
-				throw new RuntimeException(e);
+				System.out.println(e);
 			}finally{
 				JdbcUtil.release(rs, stmt, conn);
 			}

@@ -44,6 +44,7 @@ public class JdbcUtil {
 			Connection conn = DriverManager.getConnection(url,user,password);
 			return conn;
 		} catch (Exception e) {
+			System.out.println("链接数据库的url或用户名密码错误,请检查您的配置文件");
 			throw new RuntimeException("链接数据库的url或用户名密码错误,请检查您的配置文件");
 		}
 	}
