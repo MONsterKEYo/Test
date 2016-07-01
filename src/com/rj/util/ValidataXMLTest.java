@@ -27,7 +27,7 @@ public class ValidataXMLTest {
      */ 
     public boolean validateXMLByXSD(String testXSD,String xmlFileName) throws FileNotFoundException { 
 //        String xmlFileName = "Q:\\_dev_stu\\xsdtest\\src\\note.xml"; 
-        String xsdFileName = "E:/datashare/"+testXSD;
+        String xsdFileName = testXSD;
         FileInputStream fls = new FileInputStream( new File(xmlFileName));
         try { 
 
